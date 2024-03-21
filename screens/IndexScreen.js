@@ -16,24 +16,27 @@ const Separator = () => (
   />
 );
 
-export default function IndexScreen() {
+export default function IndexScreen({ navigation }) {
   const { state: blogPosts, addNewPost, deletePost } = useContext(BlogContext);
   return (
     <View>
-      <Button title="Add Post" onPress={addNewPost} />
       <FlatList
         style={styles.flatList}
         contentContainerStyle={styles.flatContainer}
         data={blogPosts}
         renderItem={({ item }) => (
-          <View style={styles.blogWrapper}>
-            <Text style={styles.title}>
-              {item.title} - {item.id}
-            </Text>
-            <TouchableOpacity onPress={() => deletePost(item.id)}>
-              <Feather name="trash" style={styles.icon} />
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("Show", { id: item.id })}
+          >
+            <View style={styles.blogWrapper}>
+              <Text style={styles.title}>
+                {item.title} - {item.id}
+              </Text>
+              <TouchableOpacity onPress={() => deletePost(item.id)}>
+                <Feather name="trash" style={styles.icon} />
+              </TouchableOpacity>
+            </View>
+          </TouchableOpacity>
         )}
         keyExtractor={(item) => item.id}
         ItemSeparatorComponent={Separator}
